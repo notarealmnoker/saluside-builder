@@ -25,8 +25,11 @@ jobs:
           sudo rm -rf /usr/share/dotnet /torch /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
           df -h
           
-          # Заходим в папку и вычищаем старый репозиторий полностью
-          cd aosp || mkdir -p aosp && cd aosp
+          echo "Создаем и переходим в папку aosp..."
+          mkdir -p aosp
+          cd aosp
+          
+          echo "Очищаем старые файлы .repo (если остались)..."
           rm -rf .repo
           echo "Мы внутри: $(pwd)"
           
