@@ -21,7 +21,11 @@ jobs:
           set -e
           echo "Текущая директория: $(pwd)"
           
-          # Полная очистка перед скачиванием
+          # Жесткая очистка диска от кэша Docker и лишних файлов GitHub
+          echo "Освобождаем место на диске..."
+          sudo rm -rf /usr/share/dotnet /torch /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
+          df -h
+          
           rm -rf aosp
           mkdir -p aosp
           cd aosp
@@ -32,8 +36,8 @@ jobs:
           git config --global user.email "salusidemod@gmail.com"
           git config --global advice.detachedHead false
           
-          echo "Инициализация репозитория..."
-          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --depth=1 --no-repo-verify
+          echo "Инициализация облегченного репозитория..."
+          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
           
           echo "Старт синхронизации..."
           python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
@@ -42,5 +46,5 @@ jobs:
           source build/envsetup.sh
           lunch lineage_alioth-userdebug
           
-          echo "Запуск компиляции прошивки..."
+          echo "Запуск компиляции..."
           mka bacon
