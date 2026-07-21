@@ -26,7 +26,7 @@ jobs:
 
     - name: Sync Android Source Code
       run: |
-        git config --global user.name "notarealmnoker"
-        git config --global user.email "saluside@example.com"
+        git config --global user.name "mnoker"
+        git config --global user.email "salusidemof@gmail.com"
         repo init -u https://github.com -b lineage-21 --git-lfs --depth=1
         repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
