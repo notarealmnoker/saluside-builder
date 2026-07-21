@@ -6,27 +6,43 @@ on:
 jobs:
   build_android:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout Builder Config
-      uses: actions/checkout@v4
+      - name: Checkout Builder Config
+        uses: actions/checkout@v4
 
-    - name: Update System
-      run: sudo apt-get update
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: false
+          dotnet: false
+          haskell: false
+          large-packages: true
+          docker-images: true
 
-    - name: Install Tools
-      run: sudo apt-get install -y bc bison build-essential curl flex g++-multilib gcc-multilib git gnupg gperf zip zlib1g-dev
+      - name: Update System
+        run: sudo apt-get update
 
-    - name: Install Google Repo Tool
-      run: |
-        mkdir -p ~/bin
-        curl https://googlesource.com > ~/bin/repo
-        chmod a+x ~/bin/repo
-        sudo ln -sf ~/bin/repo /usr/bin/repo
+      - name: Install Tools
+        run: sudo apt-get install -y bc bison build-essential curl flex g++-multilib gcc-multilib git gnupg gperf zip zlib1g-dev
 
-    - name: Sync Android Source Code
-      run: |
-        git config --global user.name "mnoker"
-        git config --global user.email "salusidemof@gmail.com"
-        repo init -u https://github.com -b lineage-21 --git-lfs --depth=1
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+      - name: Install Google Repo Tool
+        run: |
+          mkdir -p ~/bin
+          curl https://googlesource.com > ~/bin/repo
+          chmod a+x ~/bin/repo
+          sudo ln -sf ~/bin/repo /usr/bin/repo
+
+      - name: Sync Android Source Code
+        run: |
+          git config --global user.name "nnoker"
+          git config --global user.email "salusideof@gmail.com"
+          repo init -u https://github.com/LineageOS -b lineage-21 --git-lfs --depth=1
+          repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+
+      - name: Start Build Process
+        run: |
+          source build/envsetup.sh
+          lunch lineage_yourdevice-userdebug
+          mka bacon -j$(nproc --all)
