@@ -11,15 +11,16 @@ jobs:
     - name: Checkout Builder Config
       uses: actions/checkout@v4
 
-    - name: Prepare Linux Environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y bc bison build-essential curl flex g++-multilib gcc-multilib git gnupg gperf zip zlib1g-dev
+    - name: Update System
+      run: sudo apt-get update
+
+    - name: Install Tools
+      run: sudo apt-get install -y bc bison build-essential curl flex g++-multilib gcc-multilib git gnupg gperf zip zlib1g-dev
 
     - name: Install Google Repo Tool
       run: |
         mkdir -p ~/bin
-        curl https://googleapis.com > ~/bin/repo
+        curl https://googlesource.com > ~/bin/repo
         chmod a+x ~/bin/repo
         sudo ln -sf ~/bin/repo /usr/bin/repo
 
