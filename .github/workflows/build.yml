@@ -39,21 +39,22 @@ jobs:
           set -e
           mkdir -p aosp
           cd aosp
-          echo "Начало настройки git..."
+          echo "Настройка git..."
           git config --global user.name "nnoker"
           git config --global user.email "salusidemod@gmail.com"
           
-          echo "Инициализация репозитория LineageOS..."
-          repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1
+          echo "Инициализация репозитория..."
+          repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
           
-          echo "Запуск синхронизации с подробным логированием..."
-          export REPO_TRACE=1
-          repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --verbose
-          
-          echo "Проверяем, что реально скачалось в папочку aosp:"
+          echo "Проверяем содержимое после repo init:"
           ls -la
           
-          echo "Запуск сборки..."
+          echo "Старт синхронизации..."
+          repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
+          
+          echo "Проверяем содержимое после repo sync:"
+          ls -la
+          
           source build/envsetup.sh
           lunch lineage_miatoll-userdebug
           mka bacon
