@@ -36,14 +36,16 @@ jobs:
 
       - name: Sync Android Source Code
         run: |
+          mkdir -p aosp
+          cd aosp
           git config --global user.name "nnoker"
-          git config --global user.email "salusideof@gmail.com"
+          git config --global user.email "salusidemod@gmail.com"
           repo init -u https://github.com/LineageOS -b lineage-21 --git-lfs --depth=1
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
 
       - name: Start Build Process
         run: |
-          cd $GITHUB_WORKSPACE
+          cd aosp
           source build/envsetup.sh
           lunch lineage_yourdevice-userdebug
           mka bacon -j$(nproc --all)
