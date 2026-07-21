@@ -21,14 +21,13 @@ jobs:
           set -e
           echo "Текущая директория: $(pwd)"
           
-          # Жесткая очистка диска от кэша Docker и лишних файлов GitHub
           echo "Освобождаем место на диске..."
           sudo rm -rf /usr/share/dotnet /torch /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
           df -h
           
-          rm -rf aosp
-          mkdir -p aosp
-          cd aosp
+          # Заходим в папку и вычищаем старый репозиторий полностью
+          cd aosp || mkdir -p aosp && cd aosp
+          rm -rf .repo
           echo "Мы внутри: $(pwd)"
           
           echo "Настройка git..."
