@@ -38,6 +38,7 @@ jobs:
         run: |
           mkdir -p aosp
           cd aosp
+          echo "Начало загрузки исходного кода LineageOS..."
           git config --global user.name "nnoker"
           git config --global user.email "salusideof@gmail.com"
           repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1
