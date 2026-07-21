@@ -20,6 +20,9 @@ jobs:
         run: |
           set -e
           echo "Текущая директория: $(pwd)"
+          
+          # Удаляем всю папку aosp целиком, чтобы начать со стерильно чистой директории
+          rm -rf aosp
           mkdir -p aosp
           cd aosp
           echo "Мы внутри: $(pwd)"
@@ -27,15 +30,10 @@ jobs:
           echo "Настройка git..."
           git config --global user.name "nnoker"
           git config --global user.email "salusidemod@gmail.com"
-          
-          echo "Очистка старого мусора (если остался)..."
-          rm -rf .repo
+          git config --global advice.detachedHead false
           
           echo "Инициализация репозитория..."
           python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --depth=1 --no-repo-verify
-          
-          echo "Содержимое папки после init:"
-          ls -la
           
           echo "Старт синхронизации..."
           python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
