@@ -28,8 +28,8 @@ jobs:
           git config --global user.name "nnoker"
           git config --global user.email "salusidemod@gmail.com"
           
-          echo "Проверка доступности repo:"
-          which repo || echo "repo не найдена в PATH!"
+          echo "Очистка старого мусора (если остался)..."
+          rm -rf .repo
           
           echo "Инициализация репозитория..."
           python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --depth=1 --no-repo-verify
@@ -38,7 +38,7 @@ jobs:
           ls -la
           
           echo "Старт синхронизации..."
-          python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync --depth=1
+          python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
           
           echo "Содержимое папки после sync:"
           ls -la
