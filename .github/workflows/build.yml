@@ -1,4 +1,4 @@
-name: SalusideOS Cloud Builder
+name: Saluside Cloud Builder
 
 on:
   workflow_dispatch:
@@ -6,53 +6,41 @@ on:
 jobs:
   build_android:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Builder Config
+      - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: false
-          dotnet: false
-          haskell: false
-          large-packages: true
-          docker-images: true
-
-      - name: Update System
-        run: sudo apt-get update
-
-      - name: Install Tools
-        run: sudo apt-get install -y bc bison build-essential curl flex g++-multilib gcc-multilib git gnupg gperf zip zlib1g-dev
 
       - name: Install Google Repo Tool
         run: |
           mkdir -p ~/bin
-          curl https://googlesource.com > ~/bin/repo
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
-          sudo ln -sf ~/bin/repo /usr/bin/repo
 
       - name: Sync and Build Android Source
         run: |
           set -e
+          echo "Текущая директория: $(pwd)"
           mkdir -p aosp
           cd aosp
+          echo "Мы внутри: $(pwd)"
+          
           echo "Настройка git..."
           git config --global user.name "nnoker"
           git config --global user.email "salusidemod@gmail.com"
           
-          echo "Инициализация репозитория..."
-          repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
+          echo "Проверка доступности repo:"
+          which repo || echo "repo не найдена в PATH!"
           
-          echo "Проверяем содержимое после repo init:"
+          echo "Инициализация репозитория..."
+          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
+          
+          echo "Содержимое папки после init:"
           ls -la
           
           echo "Старт синхронизации..."
-          repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
+          python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
           
-          echo "Проверяем содержимое после repo sync:"
+          echo "Содержимое папки после sync:"
           ls -la
           
           source build/envsetup.sh
