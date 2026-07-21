@@ -21,7 +21,7 @@ jobs:
           set -e
           echo "Текущая директория: $(pwd)"
           
-          # Удаляем всю папку aosp целиком, чтобы начать со стерильно чистой директории
+          # Полная очистка перед скачиванием
           rm -rf aosp
           mkdir -p aosp
           cd aosp
@@ -33,14 +33,14 @@ jobs:
           git config --global advice.detachedHead false
           
           echo "Инициализация репозитория..."
-          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --depth=1 --no-repo-verify
+          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
           
           echo "Старт синхронизации..."
           python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
           
-          echo "Содержимое папки после sync:"
-          ls -la
-          
+          echo "Настройка окружения для Poco F3 (alioth)..."
           source build/envsetup.sh
-          lunch lineage_miatoll-userdebug
+          lunch lineage_alioth-userdebug
+          
+          echo "Запуск компиляции прошивки..."
           mka bacon
