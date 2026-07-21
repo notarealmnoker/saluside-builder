@@ -33,7 +33,7 @@ jobs:
           git config --global advice.detachedHead false
           
           echo "Инициализация репозитория..."
-          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
+          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-21.1 --depth=1 --no-repo-verify
           
           echo "Старт синхронизации..."
           python3 ~/bin/repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
