@@ -43,6 +43,7 @@ jobs:
 
       - name: Start Build Process
         run: |
+          cd $GITHUB_WORKSPACE
           source build/envsetup.sh
           lunch lineage_yourdevice-userdebug
           mka bacon -j$(nproc --all)
