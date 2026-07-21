@@ -32,7 +32,7 @@ jobs:
           which repo || echo "repo не найдена в PATH!"
           
           echo "Инициализация репозитория..."
-          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1 --no-repo-verify
+          python3 ~/bin/repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --depth=1 --no-repo-verify
           
           echo "Содержимое папки после init:"
           ls -la
