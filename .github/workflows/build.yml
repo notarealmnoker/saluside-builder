@@ -46,11 +46,14 @@ jobs:
           echo "Инициализация репозитория LineageOS..."
           repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1
           
-          echo "Запуск синхронизации исходного кода..."
-          repo sync -c -j$(nproc --all) --no-clone-bundle --no-tags --optimized-fetch --prune
+          echo "Запуск синхронизации с подробным логированием..."
+          export REPO_TRACE=1
+          repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune --verbose
           
-          echo "Синхронизация завершена успешно! Запуск сборки..."
-          # Сюда пишется команда запуска envsetup.sh и бьюлда
+          echo "Проверяем, что реально скачалось в папочку aosp:"
+          ls -la
+          
+          echo "Запуск сборки..."
           source build/envsetup.sh
           lunch lineage_miatoll-userdebug
           mka bacon
