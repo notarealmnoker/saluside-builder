@@ -34,20 +34,23 @@ jobs:
           chmod a+x ~/bin/repo
           sudo ln -sf ~/bin/repo /usr/bin/repo
 
-      - name: Sync Android Source Code
+      - name: Sync and Build Android Source
         run: |
           set -e
           mkdir -p aosp
           cd aosp
-          echo "Начало загрузки исходного кода LineageOS..."
+          echo "Начало настройки git..."
           git config --global user.name "nnoker"
           git config --global user.email "salusidemod@gmail.com"
+          
+          echo "Инициализация репозитория LineageOS..."
           repo init -u https://github.com/LineageOS/android.git -b lineage-21 --depth=1
-          repo sync -c -j4 --no-clone-bundle --no-tags --optimized-fetch --prune
-
-      - name: Start Build Process
-        run: |
-          cd aosp
+          
+          echo "Запуск синхронизации исходного кода..."
+          repo sync -c -j$(nproc --all) --no-clone-bundle --no-tags --optimized-fetch --prune
+          
+          echo "Синхронизация завершена успешно! Запуск сборки..."
+          # Сюда пишется команда запуска envsetup.sh и бьюлда
           source build/envsetup.sh
-          lunch lineage_yourdevice-userdebug
-          mka bacon -j4
+          lunch lineage_miatoll-userdebug
+          mka bacon
